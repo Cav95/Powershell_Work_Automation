@@ -1,0 +1,1 @@
+Copy-Item 'T:\FogliElettronici-Modelli\VST-J-R*.xlsm' .\

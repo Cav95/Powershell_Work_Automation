@@ -1,0 +1,1 @@
+Get-Content "\\SRVUT\Transfert\MATTIA CAVINA\WindowsPowerShell\Alman.txt"
