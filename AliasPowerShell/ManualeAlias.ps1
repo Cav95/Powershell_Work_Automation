@@ -1,1 +1,1 @@
-Get-Content "\\SRVUT\Transfert\MATTIA CAVINA\WindowsPowerShell\Alman.txt"
+Get-Content "\\SRVUT\Transfert\MATTIA CAVINA\WindowsPowerShell\manuale.txt"
