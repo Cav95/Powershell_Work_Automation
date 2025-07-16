@@ -8,3 +8,4 @@ Set-Alias -Name se -Value "\\SRVUT\Transfert\MATTIA CAVINA\WindowsPowerShell\Se-
 Set-Alias -Name manuale -Value "\\SRVUT\Transfert\MATTIA CAVINA\WindowsPowerShell\ManualeAlias.ps1"
 Set-Alias -Name setprofile -Value "\\SRVUT\Transfert\MATTIA CAVINA\WindowsPowerShell\Set-Alias-Profile.ps1"
 Set-Alias -Name full-upgrade -Value "\\SRVUT\Transfert\MATTIA CAVINA\WindowsPowerShell\PowerShell_Upgrade.ps1"
+Set-Alias -Name shadow -Value ".\gradlew shadowJar"
