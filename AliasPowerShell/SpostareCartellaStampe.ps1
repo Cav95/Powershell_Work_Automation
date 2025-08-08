@@ -15,6 +15,9 @@ $date = (Get-Date).ToString("yyyyMMdd")
 #salvo lo username
 $myname = $env:USERNAME
 
+#new folder
+$newfolder = "$destination\$mylocation($myname)_$date"
+
 #cerco la directory per lo schema
 if ($NumCommessa -lt 3000) {
     $orderFolder = "0_2999"
@@ -59,45 +62,47 @@ else {
     $orderFolder = "4900-4999"
 }
 
+#Copio tutta la mia cartella nella nuova posizione
+Set-Location ..
+Copy-Item -Recurse ".\$mylocation" $newfolder
+
 #accedo e salvo la posizione della cartella commessa
 Set-Location "\\srvut\Commesse\$orderFolder\$NumCommessa*"
 $p = Get-Location
 
 #torna alla cartella originale
-Set-Location "$mypath"
+Set-Location $newfolder
 
 #Per ogni sotocartella eseguo delle azioni
 Get-ChildItem -Directory | ForEach-Object {
     $name = $_.Name
+	
+	$desFolder = "$newfolder\$name\"
 
     #remove Codici.csv
-    Remove-Item "$mypath\$name\Codici.csv"
+    Remove-Item "$newfolder\$name\Codici.csv"
 
     #Copio lo schema in tutte
-    Copy-Item -Path "$p\*h*$NumCommessa*.dwg" -Destination "$mypath\$name\"
+    Copy-Item -Path "$p\*h*$NumCommessa*.dwg" -Destination "$desFolder"
 
     #Copio l'ordine stampe in tutte
-    Copy-Item -Path "T:\MacroUT\Ordinare stampe.xlsx" -Destination "$mypath\$name\"
+    Copy-Item -Path "T:\MacroUT\Ordinare stampe.xlsx" -Destination "$desFolder"
 
     #Se la cartella è officina ci metto il foglio dell officina
     if ($name.Contains("Officina")) {
-        Copy-Item -Path "\\srvut\ut\FogliElettronici-Modelli\Stampe Officina.xlsx" -Destination "$mypath\$name\"
+        Copy-Item -Path "\\srvut\ut\FogliElettronici-Modelli\Stampe Officina.xlsx" -Destination "$desFolder"
     }
 
     #Se montatori copio anche la pianta
     if ($name.Contains("Montatori")) {
-        Copy-Item -Path "$p\*t*$NumCommessa*.dwg" -Destination "$mypath\$name\"
+        Copy-Item -Path "$p\*t*$NumCommessa*.dwg" -Destination "$desFolder"
     }
 }
-
-#Copio tutta la mia cartella nella nuova posizione
-Set-Location ..
-Copy-Item -Recurse ".\$mylocation" "$destination\$mylocation($myname)_$date"
 
 $deleteme = ""
 
 while ($deleteme -ne "y" -and $deleteme -ne "n" ) {
-    $deleteme = Read-Host "Vuoi eliniare la cartella Si=[y] No=[n]:"
+    $deleteme = Read-Host "Vuoi eliminare la cartella Originale Si=[y] No=[n]:"
 }
 if ($deleteme -eq "y") {
     Remove-Item ".\$mylocation"
