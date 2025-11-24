@@ -15,6 +15,8 @@ $date = (Get-Date).ToString("yyyyMMdd")
 #salvo lo username
 $myname = $env:USERNAME
 
+if($mypath -cne "\\PDM\Stampe Reparti" ){
+
 #new folder
 $newfolder = "$destination\$mylocation($myname)_$date"
 
@@ -107,3 +109,8 @@ while ($deleteme -ne "y" -and $deleteme -ne "n" ) {
 if ($deleteme -eq "y") {
     Remove-Item ".\$mylocation"
 }
+
+Start-Process explorer.exe "$newfolder"
+	
+}else{
+echo "Cartella non valida!"}
