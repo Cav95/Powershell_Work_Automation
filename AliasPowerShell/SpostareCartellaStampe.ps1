@@ -2,7 +2,7 @@
 #proveniente da fusion.
 
 #mi salvo la mia locazione attuale per esteso
-$mypath = Get-Location
+$mypath = $PWD.Path
 #Prendo il nome della directory che voglio spostare
 $mylocation = Split-Path -Leaf (Get-Location)
 #Salvo i primi 4 caratteri
@@ -14,8 +14,10 @@ $destination = "\\SRVUT\Transfert\Stampe UT"
 $date = (Get-Date).ToString("yyyyMMdd")
 #salvo lo username
 $myname = $env:USERNAME
+#cartella controllo
+$check = "\\PDM\Stampe Reparti"
 
-if($mypath -cne "\\PDM\Stampe Reparti" ){
+if("$PWD.Path" -like "*\\PDM\Stampe Reparti\*" ){
 
 #new folder
 $newfolder = "$destination\$mylocation($myname)_$date"
