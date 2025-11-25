@@ -116,7 +116,7 @@ while ($deleteme -ne "y" -and $deleteme -ne "n" ) {
     $deleteme = Read-Host "Vuoi eliminare la cartella Originale Si=[y] No=[n]:"
 }
 if ($deleteme -eq "y") {
-    Remove-Item .\$mypath
+    Remove-Item $mypath -Recurse
 }
 
 Start-Process explorer.exe "$newfolder"
