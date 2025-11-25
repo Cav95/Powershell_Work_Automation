@@ -3,6 +3,8 @@
 
 #mi salvo la mia locazione attuale per esteso
 $mypath = $PWD.Path
+$pezzi = $mypath.Split('::')
+$mypath = $pezzi[2]
 #Prendo il nome della directory che voglio spostare
 $mylocation = Split-Path -Leaf (Get-Location)
 #Salvo i primi 4 caratteri
@@ -16,6 +18,11 @@ $date = (Get-Date).ToString("yyyyMMdd")
 $myname = $env:USERNAME
 #cartella controllo
 $check = "\\PDM\Stampe Reparti"
+#today
+$Date = Get-Date -Format yyymmdd
+
+
+
 
 if("$PWD.Path" -like "*\\PDM\Stampe Reparti\*" ){
 
@@ -109,7 +116,7 @@ while ($deleteme -ne "y" -and $deleteme -ne "n" ) {
     $deleteme = Read-Host "Vuoi eliminare la cartella Originale Si=[y] No=[n]:"
 }
 if ($deleteme -eq "y") {
-    Remove-Item ".\$mylocation"
+    Remove-Item .\$mypath
 }
 
 Start-Process explorer.exe "$newfolder"
