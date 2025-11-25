@@ -93,9 +93,10 @@ Get-ChildItem -Directory | ForEach-Object {
     #remove Codici.csv
     Remove-Item "$newfolder\$name\Codici.csv"
 
-    #Copio lo schema in tutte
+    #Copio lo schema in tutte tranne la sartoria
+	    if (!$name.Contains("Sartoria")) {
     Copy-Item -Path "$p\*h*$NumCommessa*.dwg" -Destination "$desFolder"
-
+		}
     #Copio l'ordine stampe in tutte
     Copy-Item -Path "T:\MacroUT\Ordinare stampe.xlsx" -Destination "$desFolder"
 
