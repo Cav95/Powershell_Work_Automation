@@ -3,14 +3,11 @@
 
 #mi salvo la mia locazione attuale per esteso
 $mypath = $PWD.Path
-$pezzi = $mypath.Split('::')
-$mypath = $pezzi[2]
 #Prendo il nome della directory che voglio spostare
 $mylocation = Split-Path -Leaf (Get-Location)
 #Salvo i primi 4 caratteri
 $NumCommessa = $mylocation.Substring(0, 4)
 #Salvo la cartella di destinazione
-#test#$destination="C:\Users\mcavina\OneDrive - CEPI s.p.a\Desktop\prova"
 $destination = "\\SRVUT\Transfert\Stampe UT"
 #giorno di esecuzione
 $date = (Get-Date).ToString("yyyyMMdd")
@@ -18,13 +15,9 @@ $date = (Get-Date).ToString("yyyyMMdd")
 $myname = $env:USERNAME
 #cartella controllo
 $check = "\\PDM\Stampe Reparti"
-#today
-$Date = Get-Date -Format yyymmdd
 
 
-
-
-if("$PWD.Path" -like "*\\PDM\Stampe Reparti\*" ){
+if($mypath -like "*$check\*" ){
 
 #new folder
 $newfolder = "$destination\$mylocation($myname)_$date"
@@ -84,6 +77,12 @@ $p = Get-Location
 #torna alla cartella originale
 Set-Location $newfolder
 
+$schPnt = ""
+
+while ($schPnt -ne "y" -and $schPnt -ne "n" ) {
+    $schPnt = Read-Host "Vuoi stampare schema e pianta? Si=[y] No=[n]:"
+}
+
 #Per ogni sotocartella eseguo delle azioni
 Get-ChildItem -Directory | ForEach-Object {
     $name = $_.Name
@@ -94,7 +93,7 @@ Get-ChildItem -Directory | ForEach-Object {
     Remove-Item "$newfolder\$name\Codici.csv"
 
     #Copio lo schema in tutte tranne la sartoria
-	    if (!$name.Contains("Sartoria")) {
+	if (!$name.Contains("Sartoria") -and $schPnt -eq "y") {
     Copy-Item -Path "$p\*h*$NumCommessa*.dwg" -Destination "$desFolder"
 		}
     #Copio l'ordine stampe in tutte
