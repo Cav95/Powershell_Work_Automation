@@ -1,6 +1,8 @@
 #Da lanciare da powershell nella cartella di stampe che si vuole processare , la cartella deve essere quella
 #proveniente da fusion.
 
+. "\\SRVUT\Transfert\MATTIA CAVINA\WindowsPowerShell\funzioni.ps1"
+
 #mi salvo la mia locazione attuale per esteso
 $mypath = $PWD.Path
 #Prendo il nome della directory che voglio spostare
@@ -77,11 +79,11 @@ $p = Get-Location
 #torna alla cartella originale
 Set-Location $newfolder
 
-$schPnt = ""
+$schPnt = Ask-Confirm -phrase "Vuoi stampare schema e pianta?"
 
-while ($schPnt -ne "y" -and $schPnt -ne "n" ) {
-    $schPnt = Read-Host "Vuoi stampare schema e pianta? Si=[y] No=[n]:"
-}
+#while ($schPnt -ne "y" -and $schPnt -ne "n" ) {
+ #   $schPnt = Read-Host "Vuoi stampare schema e pianta? Si=[y] No=[n]:"
+#}
 
 #Per ogni sotocartella eseguo delle azioni
 Get-ChildItem -Directory | ForEach-Object {
@@ -93,7 +95,7 @@ Get-ChildItem -Directory | ForEach-Object {
     Remove-Item "$newfolder\$name\Codici.csv"
 
     #Copio lo schema in tutte tranne la sartoria
-	if (!$name.Contains("Sartoria") -and $schPnt -eq "y") {
+	if (!$name.Contains("Sartoria") -and $schPnt) {
     Copy-Item -Path "$p\*h*$NumCommessa*.dwg" -Destination "$desFolder"
 		}
     #Copio l'ordine stampe in tutte
@@ -110,12 +112,9 @@ Get-ChildItem -Directory | ForEach-Object {
     }
 }
 
-$deleteme = ""
+$deleteme = Ask-Confirm -phrase "Vuoi eliminare la cartella Originale?"
 
-while ($deleteme -ne "y" -and $deleteme -ne "n" ) {
-    $deleteme = Read-Host "Vuoi eliminare la cartella Originale Si=[y] No=[n]:"
-}
-if ($deleteme -eq "y") {
+if ($deleteme) {
     Remove-Item $mypath -Recurse
 }
 
